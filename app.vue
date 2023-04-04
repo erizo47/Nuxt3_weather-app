@@ -46,7 +46,7 @@ const {data:city} = useAsyncData('city', async () => {
     const response: any = await $fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}`, {
     params: {
       units: "metric",
-      appid: config.public.WEATHER_APP,
+      appid: '53dc478603fcebf7b00bcf17075a45f1',
     }
   })
   
@@ -81,7 +81,7 @@ const {data:city} = useAsyncData('city', async () => {
 const {data: time} = useAsyncData('time', async () => {
   const response: any = await $fetch(`https://api.ipgeolocation.io/timezone?lat=${lat.value}&long=${lon.value}`, {
     params: {
-      apiKey: config.public.IPGEOLOCATION_KEY,
+      apiKey: '9ab6f1b144f2450ab968b5a6fad5b3d5',
     }
   })
   return response
