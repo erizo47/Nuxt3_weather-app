@@ -15,10 +15,12 @@
           <p class="text-8xl text-white font-thin">{{ city.main.temp }}°</p>
         </div>
       </div>
+      <div class="flex"></div>
       <form class="mt-20 flex justify-center" @submit.prevent="searchCity">
-        <input type="text" name="city" placeholder="Search a city..." class="rounded-md w-1/2 h-10 mr-4" v-model="input">
+        <input type="text" name="city" placeholder="Search a city..." class="rounded-md w-1/2 h-10 mr-4" v-model="input" @input="findError = false">
         <button class="bg-sky-400 w-20 text-white h-10 rounded-md">Search</button>
       </form>
+      <h3 v-if="findError" class="flex justify-center text-1xl text-white font-medium">Upps, we can`t find this city, please try another one</h3>
     </div>
 
   </div>
@@ -38,6 +40,7 @@ const input = ref('')
 const background = ref('')
 const lat = ref(cookieLat);
 const lon = ref(cookieLon);
+const findError = ref(false);
 // const {data: city, error} = <any> await useFetch(() => `https://api.openweathermap.org/data/2.5/weather?q=${search.value}&units=metric&appid=53dc478603fcebf7b00bcf17075a45f1`);
 
   
@@ -46,10 +49,10 @@ const {data:city} = useAsyncData('city', async () => {
     const response: any = await $fetch(`https://api.openweathermap.org/data/2.5/weather?q=${search.value}`, {
     params: {
       units: "metric",
-      appid: config.public.WEATHER_APP,
+      appid: '53dc478603fcebf7b00bcf17075a45f1',
     }
   })
-  
+  findError.value = false;
   cookieLat.value = response.coord.lat;
   cookieLon.value = response.coord.lon;
   cookieCity.value = search.value;
@@ -71,7 +74,7 @@ const {data:city} = useAsyncData('city', async () => {
 
   return response;
   } catch (error) {
-    
+    findError.value = true
   }
   
 }, {
@@ -81,7 +84,7 @@ const {data:city} = useAsyncData('city', async () => {
 const {data: time} = useAsyncData('time', async () => {
   const response: any = await $fetch(`https://api.ipgeolocation.io/timezone?lat=${lat.value}&long=${lon.value}`, {
     params: {
-      apiKey: config.public.IPGEOLOCATION_KEY,
+      apiKey: '9ab6f1b144f2450ab968b5a6fad5b3d5',
     }
   })
   return response
